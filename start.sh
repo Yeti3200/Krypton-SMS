@@ -15,4 +15,4 @@ echo "🔐 Google OAuth ready"
 echo "📧 Gmail-only authentication enabled"
 
 # Start the application with gunicorn
-exec gunicorn --config gunicorn.conf.py app:create_app 
+exec gunicorn --config gunicorn.conf.py app:app 

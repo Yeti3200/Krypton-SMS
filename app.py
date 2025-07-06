@@ -62,9 +62,10 @@ def create_app():
     
     return app
 
+# Create the app instance for gunicorn
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
-    
     # Check for required environment variables
     required_vars = ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET']
     missing_vars = [var for var in required_vars if not os.getenv(var)]

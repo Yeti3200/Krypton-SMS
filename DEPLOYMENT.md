@@ -21,6 +21,11 @@ pip install -r requirements.txt
 ./start.sh
 ```
 
+**Alternative (if the above doesn't work):**
+```
+gunicorn wsgi:app --bind 0.0.0.0:$PORT
+```
+
 ### 4. Google OAuth Setup for Production
 
 1. Go to [Google Cloud Console](https://console.developers.google.com/)
