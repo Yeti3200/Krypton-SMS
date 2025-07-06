@@ -144,6 +144,9 @@
             transform: translateY(-2px) scale(1.05);
             box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4), 0 0 20px rgba(0, 255, 229, 0.3);
         }
+        .cta-button:active {
+            transform: translateY(0px) scale(0.98);
+        }
     </style>
 </head>
 <body class="bg-dark-bg text-white overflow-x-hidden">
@@ -154,9 +157,9 @@
                 <div class="flex items-center">
                     <span class="text-2xl font-bold gradient-text">Krypton</span>
                 </div>
-                <button class="cta-button text-white font-semibold px-8 py-3 rounded-xl text-lg shadow-xl hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-all duration-300">
+                <a href="/login" class="cta-button text-white font-semibold px-8 py-3 rounded-xl text-lg shadow-xl hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-all duration-300 inline-block">
                     Start Free Trial
-                </button>
+                </a>
             </div>
         </div>
     </header>
@@ -172,9 +175,9 @@
                 <p class="text-xl md:text-2xl mb-12 text-gray-300 animate-fade-in-up max-w-4xl mx-auto leading-relaxed font-light" style="animation-delay: 0.2s;">
                     Krypton is your all-in-one AI assistant for review generation and customer retention — fully automated in minutes.
                 </p>
-                <button class="cta-button text-white font-semibold px-12 py-6 rounded-2xl text-xl animate-fade-in-up shadow-2xl hover:shadow-[0_0_50px_rgba(139,92,246,0.5)]" style="animation-delay: 0.4s;">
+                <a href="/login" class="cta-button text-white font-semibold px-12 py-6 rounded-2xl text-xl animate-fade-in-up shadow-2xl hover:shadow-[0_0_50px_rgba(139,92,246,0.5)] inline-block" style="animation-delay: 0.4s;">
                     Try It Free — No Card Needed
-                </button>
+                </a>
             </div>
         </div>
         <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark-bg to-transparent"></div>
@@ -288,9 +291,9 @@
                             <span class="text-gray-300 font-light">Cancel anytime, no contracts</span>
                         </li>
                     </ul>
-                    <button class="w-full cta-button text-white font-semibold px-12 py-6 rounded-2xl text-xl shadow-2xl hover:shadow-[0_0_50px_rgba(139,92,246,0.5)] transition-all duration-300">
+                    <a href="/login" class="w-full cta-button text-white font-semibold px-12 py-6 rounded-2xl text-xl shadow-2xl hover:shadow-[0_0_50px_rgba(139,92,246,0.5)] transition-all duration-300 inline-block text-center">
                         Try It Free — No Card Needed
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -385,9 +388,9 @@
                 <div class="scroll-animate">
                     <h2 class="text-5xl md:text-6xl font-bold mb-8 gradient-text">Ready to grow your business with AI?</h2>
                     <p class="text-xl text-gray-400 mb-12 font-light max-w-2xl mx-auto">Join 100+ businesses already automating their reviews and customer retention with Krypton.</p>
-                    <button class="cta-button text-white font-semibold px-16 py-8 rounded-2xl text-2xl shadow-2xl hover:shadow-[0_0_60px_rgba(139,92,246,0.6)] transition-all duration-300 animate-pulse-glow">
+                    <a href="/login" class="cta-button text-white font-semibold px-16 py-8 rounded-2xl text-2xl shadow-2xl hover:shadow-[0_0_60px_rgba(139,92,246,0.6)] transition-all duration-300 animate-pulse-glow inline-block">
                         Start Your Free Trial Today
-                    </button>
+                    </a>
                     <p class="text-sm text-gray-500 mt-6 font-light">No credit card required • 14-day free trial • Cancel anytime</p>
                 </div>
             </div>
@@ -539,6 +542,18 @@
                 const headerHeight = header.offsetHeight;
                 document.body.style.paddingTop = headerHeight + 'px';
             }
+            
+            // Add click handlers for CTA buttons
+            const ctaButtons = document.querySelectorAll('a[href="/login"]');
+            ctaButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Add a small delay for visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
         });
     </script>
 </body>
