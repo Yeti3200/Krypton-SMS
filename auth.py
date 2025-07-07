@@ -46,7 +46,7 @@ def create_auth_blueprint():
         client_id=os.getenv('GOOGLE_CLIENT_ID'),
         client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
         scope=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
-        redirect_to='auth.google_callback'
+        redirect_to='google.google_callback'
     )
     
     # Define the callback route BEFORE registering the blueprint
