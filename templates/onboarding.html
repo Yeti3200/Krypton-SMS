@@ -60,6 +60,29 @@
                 <div id="customer-preview" class="bg-gray-50 rounded-lg p-4"></div>
             </div>
             
+            <!-- Manual Entry Option -->
+            <div class="mt-6 text-center">
+                <button id="show-manual-entry" class="text-blue-600 hover:text-blue-800 text-sm underline">
+                    Don't have a file? Click here to manually add customers.
+                </button>
+            </div>
+            
+            <!-- Manual Customer Entry Form -->
+            <div id="manual-entry-section" class="mt-6 hidden">
+                <h4 class="font-semibold text-gray-800 mb-4">Add Customers Manually</h4>
+                <div id="manual-customers-container">
+                    <!-- Customer rows will be added here -->
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <button id="add-customer-row" class="text-blue-600 hover:text-blue-800 text-sm">
+                        + Add Another Customer
+                    </button>
+                    <button id="save-manual-customers" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 disabled:opacity-50" disabled>
+                        Save Customers
+                    </button>
+                </div>
+            </div>
+            
             <div class="mt-6 flex justify-end">
                 <button id="next-step-1" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                     Next: Customize Message
@@ -139,6 +162,8 @@
         let currentStep = 1;
         let uploadedCustomers = [];
         let customMessage = '';
+        let manualCustomers = [];
+        let customerRowCount = 0;
 
         // File upload handling
         document.getElementById('csv-file').addEventListener('change', function(e) {
@@ -147,6 +172,160 @@
                 uploadCustomers(file);
             }
         });
+
+        // Manual entry handling
+        document.getElementById('show-manual-entry').addEventListener('click', function() {
+            document.getElementById('manual-entry-section').classList.remove('hidden');
+            // Add first customer row
+            addCustomerRow();
+            this.style.display = 'none';
+        });
+
+        document.getElementById('add-customer-row').addEventListener('click', function() {
+            if (customerRowCount < 5) {
+                addCustomerRow();
+            }
+            if (customerRowCount >= 5) {
+                this.style.display = 'none';
+            }
+        });
+
+        document.getElementById('save-manual-customers').addEventListener('click', function() {
+            saveManualCustomers();
+        });
+
+        function addCustomerRow() {
+            customerRowCount++;
+            const container = document.getElementById('manual-customers-container');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'customer-row grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 border border-gray-200 rounded-lg';
+            rowDiv.innerHTML = `
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                    <input type="text" class="customer-name w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" 
+                           placeholder="Customer name" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
+                    <input type="tel" class="customer-phone w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" 
+                           placeholder="+1234567890" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" class="customer-email w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" 
+                           placeholder="customer@example.com">
+                </div>
+                ${customerRowCount > 1 ? `
+                <div class="md:col-span-3 text-right">
+                    <button type="button" onclick="removeCustomerRow(this)" class="text-red-600 hover:text-red-800 text-sm">
+                        Remove Customer
+                    </button>
+                </div>
+                ` : ''}
+            `;
+            container.appendChild(rowDiv);
+            
+            // Add event listeners to validate form
+            const inputs = rowDiv.querySelectorAll('input[required]');
+            inputs.forEach(input => {
+                input.addEventListener('input', validateManualForm);
+            });
+            
+            validateManualForm();
+        }
+
+        function removeCustomerRow(button) {
+            const row = button.closest('.customer-row');
+            row.remove();
+            customerRowCount--;
+            
+            // Show add button if we're under 5
+            if (customerRowCount < 5) {
+                document.getElementById('add-customer-row').style.display = 'inline-block';
+            }
+            
+            validateManualForm();
+        }
+
+        function validateManualForm() {
+            const rows = document.querySelectorAll('.customer-row');
+            let isValid = false;
+            
+            rows.forEach(row => {
+                const name = row.querySelector('.customer-name').value.trim();
+                const phone = row.querySelector('.customer-phone').value.trim();
+                if (name && phone) {
+                    isValid = true;
+                }
+            });
+            
+            document.getElementById('save-manual-customers').disabled = !isValid;
+        }
+
+        function saveManualCustomers() {
+            const rows = document.querySelectorAll('.customer-row');
+            const customers = [];
+            
+            rows.forEach(row => {
+                const name = row.querySelector('.customer-name').value.trim();
+                const phone = row.querySelector('.customer-phone').value.trim();
+                const email = row.querySelector('.customer-email').value.trim();
+                
+                if (name && phone) {
+                    customers.push({ name, phone, email });
+                }
+            });
+            
+            if (customers.length === 0) {
+                alert('Please add at least one customer with name and phone.');
+                return;
+            }
+            
+            // Save to backend
+            fetch('/onboarding/add-manual-customers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ customers: customers })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    uploadedCustomers = data.customers;
+                    showManualResults(data);
+                    document.getElementById('next-step-1').disabled = false;
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error saving customers');
+            });
+        }
+
+        function showManualResults(data) {
+            const resultsDiv = document.getElementById('upload-results');
+            const previewDiv = document.getElementById('customer-preview');
+            
+            previewDiv.innerHTML = `
+                <p class="text-green-600 font-semibold mb-2">✅ ${data.message}</p>
+                <div class="space-y-2">
+                    ${data.customers.map(customer => `
+                        <div class="flex justify-between text-sm">
+                            <span>${customer.name}</span>
+                            <span>${customer.phone}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            resultsDiv.classList.remove('hidden');
+            
+            // Hide manual entry section
+            document.getElementById('manual-entry-section').classList.add('hidden');
+        }
 
         function uploadCustomers(file) {
             const formData = new FormData();

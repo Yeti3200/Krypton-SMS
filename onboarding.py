@@ -76,6 +76,47 @@ def upload_customers():
     except Exception as e:
         return jsonify({'error': f'Error processing file: {str(e)}'}), 500
 
+@onboarding_bp.route('/add-manual-customers', methods=['POST'])
+@login_required
+def add_manual_customers():
+    """Step 1: Add customers manually (alternative to CSV upload)"""
+    try:
+        data = request.get_json()
+        customer_data = data.get('customers', [])
+        
+        if not customer_data:
+            return jsonify({'error': 'No customers provided'}), 400
+        
+        # Validate customer data
+        customers = []
+        for i, customer_info in enumerate(customer_data):
+            name = customer_info.get('name', '').strip()
+            phone = customer_info.get('phone', '').strip()
+            email = customer_info.get('email', '').strip()
+            
+            if not name or not phone:
+                return jsonify({'error': f'Customer {i+1}: Name and phone are required'}), 400
+            
+            # Generate unique ID
+            customer_id = f"{current_user.email}_manual_{i}_{datetime.now().timestamp()}"
+            customer = Customer(customer_id, current_user.email, name, phone, email if email else None)
+            customers.append(customer)
+        
+        if len(customers) > 5:
+            return jsonify({'error': 'Maximum 5 customers allowed for manual entry'}), 400
+        
+        # Save customers to database
+        Customer.save_customers(customers)
+        
+        return jsonify({
+            'success': True,
+            'message': f'Successfully added {len(customers)} customer{"s" if len(customers) != 1 else ""}',
+            'customers': [{'name': c.name, 'phone': c.phone, 'email': c.email} for c in customers]
+        })
+        
+    except Exception as e:
+        return jsonify({'error': f'Error saving customers: {str(e)}'}), 500
+
 @onboarding_bp.route('/customize-message', methods=['POST'])
 @login_required
 def customize_message():
