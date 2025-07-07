@@ -96,7 +96,7 @@ def init_auth(app):
         """Initiate Google OAuth login"""
         if not google.authorized:
             return redirect(url_for('google.login'))
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('api.dashboard'))
     
     @app.route('/logout')
     @login_required
