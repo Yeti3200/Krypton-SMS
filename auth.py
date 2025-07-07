@@ -76,7 +76,7 @@ def create_auth_blueprint():
             session['user_email'] = email
             session['user_name'] = name
             
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('api.dashboard'))
         else:
             return {'error': 'Failed to get user info from Google'}, 400
     
