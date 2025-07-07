@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, render_template, session
-from flask_login import LoginManager
+from flask_login import LoginManager, login_required, current_user
 from auth import init_auth, User
 from routes import init_routes
 import os
@@ -41,6 +41,19 @@ def create_app():
     def landing():
         """Serve the landing page"""
         return render_template('landing.html')
+    
+    # Dashboard route
+    @app.route('/dashboard')
+    @login_required
+    def dashboard():
+        """Protected dashboard route - renders HTML dashboard"""
+        return render_template('dashboard.html', 
+                             user=current_user,
+                             stats={
+                                 'total_campaigns': 0,
+                                 'total_reviews': 0,
+                                 'total_customers': 0
+                             })
     
     # Health check endpoint
     @app.route('/health')

@@ -76,7 +76,7 @@ def create_auth_blueprint():
             session['user_email'] = email
             session['user_name'] = name
             
-            return redirect(url_for('api.dashboard'))
+            return redirect(url_for('dashboard'))
         else:
             return {'error': 'Failed to get user info from Google'}, 400
     
@@ -96,7 +96,7 @@ def init_auth(app):
         """Initiate Google OAuth login"""
         if not google.authorized:
             return redirect(url_for('google.login'))
-        return redirect(url_for('api.dashboard'))
+        return redirect(url_for('dashboard'))
     
     @app.route('/logout')
     @login_required
