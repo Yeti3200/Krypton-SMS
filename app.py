@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, session
 from flask_login import LoginManager
 from auth import init_auth, User
 from routes import init_routes
@@ -25,8 +25,9 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         """Load user from session"""
-        # In a real app, you'd load from database
-        # For now, we'll return None and let the session handle it
+        # Reconstruct user from session data
+        if 'user_email' in session and 'user_name' in session:
+            return User(user_id, session['user_email'], session['user_name'])
         return None
     
     # Initialize authentication
