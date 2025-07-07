@@ -21,7 +21,7 @@
         </header>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <!-- Total Campaigns -->
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex items-center">
@@ -56,6 +56,23 @@
                 </div>
             </div>
 
+            <!-- SMS Sent -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-5">
+                        <h3 class="text-lg font-semibold text-gray-800">SMS Sent</h3>
+                        <p class="text-3xl font-bold text-purple-600">{{ stats.customers_with_sms }}</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Total Reviews -->
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex items-center">
@@ -74,26 +91,57 @@
             </div>
         </div>
 
-        <!-- Features Coming Soon -->
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="/onboarding" class="p-4 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors">
+                    <h3 class="font-semibold text-blue-800">📝 New Campaign</h3>
+                    <p class="text-sm text-blue-600">Start a new SMS campaign</p>
+                </a>
+                <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                    <h3 class="font-semibold text-green-800">📊 Analytics</h3>
+                    <p class="text-sm text-green-600">View campaign performance</p>
+                    <span class="text-xs text-gray-500">(Coming Soon)</span>
+                </div>
+                <div class="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                    <h3 class="font-semibold text-purple-800">👥 Manage Customers</h3>
+                    <p class="text-sm text-purple-600">View and edit customer list</p>
+                    <span class="text-xs text-gray-500">(Coming Soon)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Features Coming Soon</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="p-4 bg-gray-50 rounded-lg">
-                    <h3 class="font-semibold text-gray-700">SMS Campaigns</h3>
-                    <p class="text-sm text-gray-600">Send targeted SMS campaigns to your customers</p>
-                </div>
-                <div class="p-4 bg-gray-50 rounded-lg">
-                    <h3 class="font-semibold text-gray-700">Review Automation</h3>
-                    <p class="text-sm text-gray-600">Automatically request reviews from satisfied customers</p>
-                </div>
-                <div class="p-4 bg-gray-50 rounded-lg">
-                    <h3 class="font-semibold text-gray-700">Analytics</h3>
-                    <p class="text-sm text-gray-600">Track campaign performance and customer engagement</p>
-                </div>
-                <div class="p-4 bg-gray-50 rounded-lg">
-                    <h3 class="font-semibold text-gray-700">Customer Retention</h3>
-                    <p class="text-sm text-gray-600">Keep customers engaged with targeted messaging</p>
-                </div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
+            <div class="space-y-4">
+                {% if stats.total_campaigns > 0 %}
+                    <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-800">Successfully launched {{ stats.total_campaigns }} campaign{{ 's' if stats.total_campaigns != 1 else '' }}</p>
+                            <p class="text-sm text-gray-600">{{ stats.customers_with_sms }} SMS messages sent</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-8">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">Welcome to Krypton SMS!</h3>
+                        <p class="mt-1 text-sm text-gray-500">You're all set up. Ready to launch your first campaign?</p>
+                        <div class="mt-6">
+                            <a href="/onboarding" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                🚀 Launch First Campaign
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

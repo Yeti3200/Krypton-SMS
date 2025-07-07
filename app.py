@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, render_template, session
+from flask import Flask, jsonify, render_template, session, redirect, url_for
 from flask_login import LoginManager, login_required, current_user
 from auth import init_auth, User
 from routes import init_routes
+from onboarding import init_onboarding
+from database import UserStats
 import os
 from dotenv import load_dotenv
 
@@ -36,6 +38,9 @@ def create_app():
     # Initialize routes
     init_routes(app)
     
+    # Initialize onboarding
+    init_onboarding(app)
+    
     # Landing page route
     @app.route('/')
     def landing():
@@ -46,14 +51,23 @@ def create_app():
     @app.route('/dashboard')
     @login_required
     def dashboard():
-        """Protected dashboard route - renders HTML dashboard"""
+        """Protected dashboard route - shows onboarding or dashboard"""
+        user_stats = UserStats.get_user_stats(current_user.email)
+        
+        # If user has no customers, redirect to onboarding
+        if not UserStats.user_has_customers(current_user.email):
+            return redirect(url_for('onboarding'))
+        
         return render_template('dashboard.html', 
                              user=current_user,
-                             stats={
-                                 'total_campaigns': 0,
-                                 'total_reviews': 0,
-                                 'total_customers': 0
-                             })
+                             stats=user_stats)
+    
+    # Onboarding wizard route
+    @app.route('/onboarding')
+    @login_required
+    def onboarding():
+        """3-step onboarding wizard"""
+        return render_template('onboarding.html', user=current_user)
     
     # Health check endpoint
     @app.route('/health')
