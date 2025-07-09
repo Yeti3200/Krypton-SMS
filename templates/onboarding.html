@@ -1,152 +1,130 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Started - Krypton Outreach</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'app-bg': '#0f0f0f',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .glassmorphism {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(90deg, #7F5AF0, #00D1FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .gradient-btn {
-            background: linear-gradient(90deg, #7F5AF0, #00D1FF);
-            color: white;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        
-        .gradient-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(127, 90, 240, 0.4);
-        }
-        
-        .gradient-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .dark-input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        
-        .dark-input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #7F5AF0;
-            box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.2);
-        }
-        
-        .dark-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .progress-gradient {
-            background: linear-gradient(90deg, #7F5AF0, #00D1FF);
-        }
-        
-        .hover-lift {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .hover-lift:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .drop-zone-dark {
-            background: rgba(127, 90, 240, 0.1);
-            border: 2px dashed rgba(127, 90, 240, 0.5);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        
-        .drop-zone-dark:hover {
-            background: rgba(127, 90, 240, 0.2);
-            border-color: #7F5AF0;
-        }
-        
-        .stats-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .stats-card:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        body {
-            background: #0f0f0f;
-        }
-    </style>
-</head>
-<body class="bg-app-bg min-h-screen text-white">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <header class="glassmorphism rounded-lg p-6 mb-8 hover-lift">
-            <div class="flex justify-between items-center">
-                <h1 class="text-3xl font-bold gradient-text">Welcome to Krypton SMS!</h1>
-                <div class="text-right">
-                    <p class="text-lg font-semibold text-white">{{ user.name }}</p>
-                    <p class="text-sm text-gray-300">{{ user.email }}</p>
-                </div>
-            </div>
-        </header>
+{% extends "base.html" %}
 
-        <!-- Progress Bar -->
-        <div class="glassmorphism rounded-lg p-6 mb-8 hover-lift">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-semibold text-white">Quick Setup</h2>
-                <span class="text-sm text-gray-300">Step <span id="current-step">1</span> of 3</span>
-            </div>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-                <div id="progress-bar" class="progress-gradient h-2 rounded-full transition-all duration-300" style="width: 33%"></div>
-            </div>
-            <div class="flex justify-between mt-2 text-sm text-gray-300">
-                <span>Upload Customers</span>
-                <span>Customize Message</span>
-                <span>Launch Campaign</span>
+{% block title %}Get Started - Krypton SMS{% endblock %}
+
+{% block head %}
+<style>
+    .gradient-text {
+        background: linear-gradient(90deg, #00ff84, #00cc6a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .gradient-btn {
+        background: linear-gradient(90deg, #00ff84, #00cc6a);
+        color: #0d0d0d;
+        border: none;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+    
+    .gradient-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 255, 132, 0.4);
+    }
+    
+    .gradient-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .dark-input {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+    
+    .dark-input:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #00ff84;
+        box-shadow: 0 0 0 3px rgba(0, 255, 132, 0.2);
+    }
+    
+    .dark-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .progress-gradient {
+        background: linear-gradient(90deg, #00ff84, #00cc6a);
+    }
+    
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .drop-zone-dark {
+        background: rgba(0, 255, 132, 0.1);
+        border: 2px dashed rgba(0, 255, 132, 0.5);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+    
+    .drop-zone-dark:hover {
+        background: rgba(0, 255, 132, 0.2);
+        border-color: #00ff84;
+    }
+    
+    .stats-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .stats-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <header class="glass rounded-lg p-6 mb-8 hover-lift">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold gradient-text">Welcome to Krypton SMS!</h1>
+            <div class="text-right">
+                <p class="text-lg font-semibold text-white">{{ user.name }}</p>
+                <p class="text-sm text-krypton-gray">{{ user.email }}</p>
             </div>
         </div>
+    </header>
 
-        <!-- Step 1: Upload Customers -->
-        <div id="step-1" class="step-content glassmorphism rounded-lg p-6 mb-8 hover-lift">
-            <h3 class="text-2xl font-bold gradient-text mb-4">Step 1: Upload Your Customer List</h3>
-            <p class="text-gray-300 mb-6">Upload a CSV file with your customer information. Required columns: Name, Phone. Optional: Email</p>
+    <!-- Progress Bar -->
+    <div class="glass rounded-lg p-6 mb-8 hover-lift">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-white">Quick Setup</h2>
+            <span class="text-sm text-krypton-gray">Step <span id="current-step">1</span> of 3</span>
+        </div>
+        <div class="w-full bg-gray-700 rounded-full h-2">
+            <div id="progress-bar" class="progress-gradient h-2 rounded-full transition-all duration-300" style="width: 33%"></div>
+        </div>
+        <div class="flex justify-between mt-2 text-sm text-krypton-gray">
+            <span>Upload Customers</span>
+            <span>Customize Message</span>
+            <span>Launch Campaign</span>
+        </div>
+    </div>
+
+    <!-- Step 1: Upload Customers -->
+    <div id="step-1" class="step-content glass rounded-lg p-6 mb-8 hover-lift">
+        <h3 class="text-2xl font-bold gradient-text mb-4">Step 1: Upload Your Customer List</h3>
+        <p class="text-krypton-gray mb-6">Upload a CSV file with your customer information. Required columns: Name, Phone. Optional: Email</p>
             
             <div id="drop-zone" class="drop-zone-dark rounded-xl p-8 text-center cursor-pointer group">
                 <div class="mb-6">
-                    <div class="mx-auto w-16 h-16 bg-purple-500 bg-opacity-30 rounded-full flex items-center justify-center group-hover:bg-opacity-50 transition-colors duration-300">
-                        <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="mx-auto w-16 h-16 bg-krypton-green bg-opacity-30 rounded-full flex items-center justify-center group-hover:bg-opacity-50 transition-colors duration-300">
+                        <svg class="w-8 h-8 text-krypton-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                         </svg>
                     </div>
@@ -752,5 +730,11 @@
         // Message preview update
         document.getElementById('sms-message').addEventListener('input', updateMessagePreview);
     </script>
-</body>
-</html>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Additional onboarding-specific scripts can go here
+</script>
+{% endblock %}

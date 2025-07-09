@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Krypton SMS{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'krypton-green': '#00ff84',
+                        'krypton-dark': '#0d0d0d',
+                        'krypton-gray': '#999999'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Krypton button styles */
+        .btn-krypton {
+            @apply bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg;
+        }
+        
+        .btn-krypton-outline {
+            @apply border-2 border-krypton-green text-krypton-green hover:bg-krypton-green hover:text-black font-semibold py-3 px-6 rounded-lg transition-all duration-200;
+        }
+        
+        .input-krypton {
+            @apply bg-gray-800 border border-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-krypton-green focus:border-transparent transition-all duration-200;
+        }
+        
+        .card-krypton {
+            @apply bg-gray-900 border border-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200;
+        }
+        
+        /* Glassmorphism effect */
+        .glass {
+            @apply bg-white bg-opacity-5 backdrop-blur-xl border border-white border-opacity-10;
+        }
+    </style>
+    
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-krypton-dark text-white min-h-screen font-sans antialiased">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 bg-gradient-to-br from-green-900/10 via-krypton-dark to-green-800/10 pointer-events-none"></div>
+    <div class="fixed inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,255,132,0.05),transparent)] pointer-events-none"></div>
+    <div class="fixed inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,255,132,0.03),transparent)] pointer-events-none"></div>
+    
+    <div class="relative z-10">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
+                {% for message in messages %}
+                    <div class="bg-krypton-green text-black px-6 py-3 rounded-lg shadow-lg animate-fade-in-down">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                // Auto-hide flash messages
+                setTimeout(() => {
+                    const flashMessages = document.getElementById('flash-messages');
+                    if (flashMessages) {
+                        flashMessages.style.opacity = '0';
+                        flashMessages.style.transform = 'translateY(-100%)';
+                        setTimeout(() => flashMessages.remove(), 300);
+                    }
+                }, 5000);
+            </script>
+        {% endif %}
+    {% endwith %}
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

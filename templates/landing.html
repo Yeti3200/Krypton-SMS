@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krypton - Automate Reviews. Win Repeat Customers.</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#8b5cf6',
-                        'primary-dark': '#7c3aed',
-                        'accent': '#00ffe5',
-                        'dark-bg': '#0f0f0f',
-                        'dark-card': '#1a1a1a',
-                        'dark-border': '#2a2a2a',
-                    },
-                    fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
-                    },
+{% extends "base.html" %}
+
+{% block title %}Krypton SMS - Automate Reviews. Win Repeat Customers.{% endblock %}
+
+{% block head %}
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'primary': '#00ff84',
+                    'primary-dark': '#00cc6a',
+                    'accent': '#00ff84',
+                    'dark-bg': '#0d0d0d',
+                    'dark-card': '#1a1a1a',
+                    'dark-border': '#2a2a2a',
+                },
+                fontFamily: {
+                    'inter': ['Inter', 'sans-serif'],
+                },
                     animation: {
                         'gradient-x': 'gradient-x 15s ease infinite',
                         'float': 'float 3s ease-in-out infinite',
@@ -46,8 +43,8 @@
                             '50%': { transform: 'translateY(-10px)' }
                         },
                         'glow': {
-                            '0%': { 'box-shadow': '0 0 5px rgba(139, 92, 246, 0.5)' },
-                            '100%': { 'box-shadow': '0 0 20px rgba(139, 92, 246, 0.8), 0 0 30px rgba(139, 92, 246, 0.4)' }
+                            '0%': { 'box-shadow': '0 0 5px rgba(0, 255, 132, 0.5)' },
+                            '100%': { 'box-shadow': '0 0 20px rgba(0, 255, 132, 0.8), 0 0 30px rgba(0, 255, 132, 0.4)' }
                         },
                         'fade-in': {
                             '0%': { opacity: '0' },
@@ -66,7 +63,7 @@
                                 'box-shadow': '0 0 20px rgba(0, 255, 229, 0.3), 0 0 40px rgba(139, 92, 246, 0.2)' 
                             },
                             '50%': { 
-                                'box-shadow': '0 0 30px rgba(0, 255, 229, 0.5), 0 0 60px rgba(139, 92, 246, 0.4)' 
+                                'box-shadow': '0 0 30px rgba(0, 255, 229, 0.5), 0 0 60px rgba(0, 255, 132, 0.4)' 
                             }
                         }
                     }
@@ -142,22 +139,23 @@
         }
         .cta-button:hover {
             transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4), 0 0 20px rgba(0, 255, 229, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 255, 132, 0.4), 0 0 20px rgba(0, 255, 229, 0.3);
         }
         .cta-button:active {
             transform: translateY(0px) scale(0.98);
         }
     </style>
-</head>
-<body class="bg-dark-bg text-white overflow-x-hidden">
-    <!-- Sticky Header -->
+{% endblock %}
+
+{% block content %}
+<!-- Sticky Header -->
     <header class="fixed top-0 left-0 right-0 z-50 glass-morphism border-b border-white/10">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <span class="text-2xl font-bold gradient-text">Krypton</span>
                 </div>
-                <a href="/login" class="cta-button text-white font-semibold px-8 py-3 rounded-xl text-lg shadow-xl hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-all duration-300 inline-block">
+                <a href="/login" class="cta-button text-white font-semibold px-8 py-3 rounded-xl text-lg shadow-xl hover:shadow-[0_0_30px_rgba(0,255,132,0.4)] transition-all duration-300 inline-block">
                     Start Free Trial
                 </a>
             </div>
@@ -557,5 +555,7 @@
             });
         });
     </script>
-</body>
-</html>
+</script>
+{% endblock %}
+
+{% block content %}{% endblock %}

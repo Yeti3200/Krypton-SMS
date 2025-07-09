@@ -1,174 +1,172 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Krypton SMS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-900 min-h-screen relative overflow-hidden">
-  <!-- Background Effects -->
-  <div class="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-gray-900 to-cyan-900/20"></div>
-  <div class="fixed inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(139,92,246,0.1),transparent)] pointer-events-none"></div>
-  <div class="fixed inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,255,229,0.1),transparent)] pointer-events-none"></div>
-  
-  <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
-    <div class="w-full max-w-md">
-      <!-- Header -->
-      <div class="text-center mb-8">
-        <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent mb-4">
-          Welcome to Krypton SMS 👋
-        </h1>
-        <p class="text-xl text-gray-300 mb-2">Let's get your first 5-star review</p>
-        <p class="text-lg text-gray-400">sent in 60 seconds.</p>
-      </div>
+{% extends "base.html" %}
 
-      <!-- Welcome Form -->
-      <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
-        <form id="welcomeForm" class="space-y-6">
-          <!-- Test Customer Info -->
-          <div class="space-y-4">
-            <h3 class="text-lg font-semibold text-white mb-4 text-center">Add a test customer</h3>
-            
-            <!-- Name Input -->
-            <div>
-              <label for="customerName" class="block text-sm font-medium text-gray-300 mb-2">Customer Name</label>
-              <input 
-                type="text" 
-                id="customerName" 
-                name="customerName" 
-                required
-                placeholder="e.g. John Smith"
-                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all duration-200"
-              >
-            </div>
+{% block title %}Welcome - Krypton SMS{% endblock %}
 
-            <!-- Phone Input -->
-            <div>
-              <label for="customerPhone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
-              <input 
-                type="tel" 
-                id="customerPhone" 
-                name="customerPhone" 
-                required
-                placeholder="e.g. 555-123-4567"
-                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all duration-200"
-              >
-            </div>
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-md">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-krypton-green to-green-400 bg-clip-text text-transparent mb-4">
+        Welcome to Krypton SMS 👋
+      </h1>
+      <p class="text-xl text-white mb-2">Let's get your first 5-star review</p>
+      <p class="text-lg text-krypton-gray">sent in 60 seconds.</p>
+    </div>
+
+    <!-- Welcome Form -->
+    <div class="glass rounded-2xl p-8 shadow-2xl">
+      <form id="welcomeForm" class="space-y-6">
+        <!-- Test Customer Info -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-white mb-4 text-center">Add a test customer</h3>
+          
+          <!-- Name Input -->
+          <div>
+            <label for="customerName" class="block text-sm font-medium text-gray-300 mb-2">
+              Customer Name
+            </label>
+            <input 
+              type="text" 
+              id="customerName" 
+              name="customerName" 
+              required
+              placeholder="e.g. John Smith"
+              class="input-krypton w-full"
+            >
           </div>
 
-          <!-- Send Button -->
-          <button 
-            type="submit" 
-            id="sendTestBtn"
-            class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-4 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 flex items-center justify-center space-x-2"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <span>Send Test Message</span>
-          </button>
-
-          <!-- Loading State -->
-          <div id="loadingState" class="hidden text-center">
-            <div class="inline-flex items-center space-x-2">
-              <div class="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
-              <span class="text-gray-300">Sending test message...</span>
-            </div>
+          <!-- Phone Input -->
+          <div>
+            <label for="customerPhone" class="block text-sm font-medium text-gray-300 mb-2">
+              Phone Number
+            </label>
+            <input 
+              type="tel" 
+              id="customerPhone" 
+              name="customerPhone" 
+              required
+              placeholder="e.g. 555-123-4567"
+              class="input-krypton w-full"
+            >
           </div>
+        </div>
 
-          <!-- Success State -->
-          <div id="successState" class="hidden text-center space-y-4">
-            <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
-              <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div>
-              <h4 class="text-lg font-semibold text-white mb-2">Test message sent! 🎉</h4>
-              <p class="text-gray-400 text-sm mb-4">Your SMS automation is now active. Check your console for the message details.</p>
-              <button 
-                onclick="goToDashboard()" 
-                class="bg-gradient-to-r from-green-500 to-cyan-500 hover:from-green-600 hover:to-cyan-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105"
-              >
-                Go to Dashboard
-              </button>
-            </div>
-          </div>
-
-          <!-- Error State -->
-          <div id="errorState" class="hidden text-center">
-            <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
-              <p class="text-red-400 text-sm" id="errorMessage">Something went wrong. Please try again.</p>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <!-- Skip Option -->
-      <div class="text-center mt-6">
+        <!-- Send Button -->
         <button 
-          onclick="goToDashboard()" 
-          class="text-gray-400 hover:text-gray-300 text-sm transition-colors"
+          type="submit" 
+          id="sendTestBtn"
+          class="btn-krypton w-full flex items-center justify-center space-x-2"
         >
-          Skip for now →
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          <span>Send Test Message</span>
         </button>
-      </div>
 
-      <!-- User Info -->
-      <div class="text-center mt-8 text-xs text-gray-500">
-        Logged in as {{ user.name }} ({{ user.email }})
-        <br>
-        <a href="/logout" class="text-gray-400 hover:text-gray-300 mt-1 inline-block">Logout</a>
-      </div>
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden text-center">
+          <div class="inline-flex items-center space-x-2">
+            <div class="w-4 h-4 border-2 border-krypton-green border-t-transparent rounded-full animate-spin"></div>
+            <span class="text-gray-300">Sending test message...</span>
+          </div>
+        </div>
+
+        <!-- Success State -->
+        <div id="successState" class="hidden text-center space-y-4">
+          <div class="w-16 h-16 bg-krypton-green bg-opacity-20 rounded-full flex items-center justify-center mx-auto">
+            <svg class="w-8 h-8 text-krypton-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-2">Test message sent! 🎉</h4>
+            <p class="text-krypton-gray text-sm mb-4">Your SMS automation is now active. Check your console for the message details.</p>
+            <button 
+              onclick="goToDashboard()" 
+              class="btn-krypton"
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="hidden text-center">
+          <div class="bg-red-500 bg-opacity-10 border border-red-500 border-opacity-20 rounded-lg p-4">
+            <p class="text-red-400 text-sm" id="errorMessage">Something went wrong. Please try again.</p>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Skip Option -->
+    <div class="text-center mt-6">
+      <button 
+        onclick="goToDashboard()" 
+        class="text-krypton-gray hover:text-gray-300 text-sm transition-colors"
+      >
+        Skip for now →
+      </button>
+    </div>
+
+    <!-- User Info -->
+    <div class="text-center mt-8 text-xs text-gray-500">
+      Logged in as {{ user.name }} ({{ user.email }})
+      <br>
+      <a href="/logout" class="text-gray-400 hover:text-gray-300 mt-1 inline-block transition-colors">
+        Logout
+      </a>
     </div>
   </div>
+</div>
 
-  <script>
-    document.getElementById('welcomeForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const form = e.target;
-      const formData = new FormData(form);
-      const submitBtn = document.getElementById('sendTestBtn');
-      const loadingState = document.getElementById('loadingState');
-      const successState = document.getElementById('successState');
-      const errorState = document.getElementById('errorState');
-      
-      // Reset states
-      submitBtn.classList.add('hidden');
-      loadingState.classList.remove('hidden');
-      successState.classList.add('hidden');
-      errorState.classList.add('hidden');
-      
-      try {
-        const response = await fetch('/send-test', {
-          method: 'POST',
-          body: formData
-        });
-        
-        const result = await response.json();
-        
-        loadingState.classList.add('hidden');
-        
-        if (result.success) {
-          successState.classList.remove('hidden');
-        } else {
-          errorState.classList.remove('hidden');
-          document.getElementById('errorMessage').textContent = result.message || 'Something went wrong. Please try again.';
-          submitBtn.classList.remove('hidden');
-        }
-      } catch (error) {
-        loadingState.classList.add('hidden');
-        errorState.classList.remove('hidden');
-        submitBtn.classList.remove('hidden');
-        console.error('Error:', error);
-      }
-    });
+{% block scripts %}
+<script>
+  document.getElementById('welcomeForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
     
-    function goToDashboard() {
-      window.location.href = '/dashboard';
+    const form = e.target;
+    const formData = new FormData(form);
+    const submitBtn = document.getElementById('sendTestBtn');
+    const loadingState = document.getElementById('loadingState');
+    const successState = document.getElementById('successState');
+    const errorState = document.getElementById('errorState');
+    
+    // Reset states
+    submitBtn.classList.add('hidden');
+    loadingState.classList.remove('hidden');
+    successState.classList.add('hidden');
+    errorState.classList.add('hidden');
+    
+    try {
+      const response = await fetch('/send-test', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const result = await response.json();
+      
+      loadingState.classList.add('hidden');
+      
+      if (result.success) {
+        successState.classList.remove('hidden');
+      } else {
+        errorState.classList.remove('hidden');
+        document.getElementById('errorMessage').textContent = result.message || 'Something went wrong. Please try again.';
+        submitBtn.classList.remove('hidden');
+      }
+    } catch (error) {
+      loadingState.classList.add('hidden');
+      errorState.classList.remove('hidden');
+      submitBtn.classList.remove('hidden');
+      console.error('Error:', error);
     }
-  </script>
-</body>
-</html>
+  });
+  
+  function goToDashboard() {
+    window.location.href = '/dashboard';
+  }
+</script>
+{% endblock %}
+{% endblock %}
