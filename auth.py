@@ -129,7 +129,7 @@ def create_auth_blueprint():
             session['user_email'] = email
             session['user_name'] = name
             
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('welcome'))
         else:
             return {'error': 'Failed to get user info from Google'}, 400
     
@@ -166,7 +166,7 @@ def init_auth(app):
             session['user_email'] = user.email
             session['user_name'] = user.name
             session['login_method'] = 'manual'
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('welcome'))
         else:
             flash('Invalid email or password')
             return render_template('login.html')
@@ -176,7 +176,7 @@ def init_auth(app):
         """Initiate Google OAuth login"""
         if not google.authorized:
             return redirect(url_for('google.login'))
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('welcome'))
     
     @app.route('/signup', methods=['GET', 'POST'])
     def signup():
@@ -201,7 +201,7 @@ def init_auth(app):
             session['user_name'] = user.name
             session['login_method'] = 'manual'
             flash('Account created successfully!')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('welcome'))
         else:
             flash('User with this email already exists')
             return render_template('signup.html')

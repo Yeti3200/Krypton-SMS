@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, render_template, session, redirect, url_for
+from flask import Flask, jsonify, render_template, session, redirect, url_for, request
 from flask_login import LoginManager, login_required, current_user
 from auth import init_auth, User
 from routes import init_routes
 from onboarding import init_onboarding
-from database import UserStats
+from database import UserStats, Customer
+import logging
 import os
 from dotenv import load_dotenv
 
@@ -22,7 +23,7 @@ def create_app():
     # Initialize Flask-Login
     login_manager = LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = 'login'
+    login_manager.login_view = 'login'  # Redirect to login if not authenticated
     
     @login_manager.user_loader
     def load_user(user_id):
@@ -47,16 +48,84 @@ def create_app():
         """Serve the landing page"""
         return render_template('landing.html')
     
+    # Welcome route (replaces onboarding for first-time users)
+    @app.route('/welcome')
+    @login_required
+    def welcome():
+        """Welcome screen for first-time users"""
+        # If user has already seen welcome (has customers), redirect to dashboard
+        if UserStats.user_has_seen_welcome(current_user.email):
+            return redirect(url_for('dashboard'))
+        
+        return render_template('welcome.html', user=current_user)
+    
+    # Send test message route
+    @app.route('/send-test', methods=['POST'])
+    @login_required
+    def send_test():
+        """Handle test message sending from welcome screen"""
+        try:
+            customer_name = request.form.get('customerName', '').strip()
+            customer_phone = request.form.get('customerPhone', '').strip()
+            
+            if not customer_name or not customer_phone:
+                return jsonify({
+                    'success': False,
+                    'message': 'Please provide both name and phone number'
+                }), 400
+            
+            # Add test customer
+            success = Customer.add_customer_if_new(
+                current_user.email, 
+                customer_name, 
+                customer_phone, 
+                'welcome'
+            )
+            
+            if not success:
+                # Customer already exists, but that's ok for test
+                customers = Customer.get_customers_by_user(current_user.email)
+                existing_customer = next((c for c in customers if c.phone == customer_phone), None)
+                if existing_customer:
+                    customer_name = existing_customer.name
+            
+            # Simulate sending test SMS
+            test_message = f"Hi {customer_name}, thanks for trying Krypton SMS! This is a test message to show how review requests work. 🚀"
+            
+            # Log the test SMS
+            logging.info(f"📱 WELCOME TEST SMS:")
+            logging.info(f"   To: {customer_name} ({customer_phone})")
+            logging.info(f"   Message: {test_message}")
+            logging.info(f"   User: {current_user.email}")
+            logging.info(f"   Type: Welcome Test")
+            
+            return jsonify({
+                'success': True,
+                'message': f'Test message sent to {customer_name}!',
+                'details': {
+                    'customer_name': customer_name,
+                    'customer_phone': customer_phone,
+                    'message': test_message
+                }
+            })
+            
+        except Exception as e:
+            logging.error(f"Welcome test error for {current_user.email}: {str(e)}")
+            return jsonify({
+                'success': False,
+                'message': 'Failed to send test message. Please try again.'
+            }), 500
+    
     # Dashboard route
     @app.route('/dashboard')
     @login_required
     def dashboard():
-        """Protected dashboard route - shows onboarding or dashboard"""
+        """Protected dashboard route - shows welcome or dashboard"""
         user_stats = UserStats.get_user_stats(current_user.email)
         
-        # If user has no customers, redirect to onboarding
-        if not UserStats.user_has_customers(current_user.email):
-            return redirect(url_for('onboarding'))
+        # If user hasn't seen welcome yet, redirect to welcome
+        if not UserStats.user_has_seen_welcome(current_user.email):
+            return redirect(url_for('welcome'))
         
         return render_template('dashboard.html', 
                              user=current_user,

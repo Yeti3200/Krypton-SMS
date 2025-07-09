@@ -302,3 +302,16 @@ class UserStats:
         """Check if user has any campaigns"""
         campaigns = Campaign.get_campaigns_by_user(user_email)
         return len(campaigns) > 0
+    
+    @staticmethod
+    def user_has_seen_welcome(user_email: str) -> bool:
+        """Check if user has completed the welcome flow"""
+        customers = Customer.get_customers_by_user(user_email)
+        return len(customers) > 0  # If they have any customers, they've seen welcome
+    
+    @staticmethod
+    def mark_welcome_completed(user_email: str):
+        """Mark that user has completed welcome (happens when they add first customer)"""
+        # This is automatically handled when a customer is added
+        # We use customer count as the welcome completion indicator
+        pass
