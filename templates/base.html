@@ -85,28 +85,30 @@
     </div>
     
     <!-- Flash Messages -->
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
-                {% for message in messages %}
-                    <div class="bg-krypton-green text-black px-6 py-3 rounded-lg shadow-lg animate-fade-in-down">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-            <script>
-                // Auto-hide flash messages
-                setTimeout(() => {
-                    const flashMessages = document.getElementById('flash-messages');
-                    if (flashMessages) {
-                        flashMessages.style.opacity = '0';
-                        flashMessages.style.transform = 'translateY(-100%)';
-                        setTimeout(() => flashMessages.remove(), 300);
-                    }
-                }, 5000);
-            </script>
-        {% endif %}
-    {% endwith %}
+    {% if request %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
+                    {% for message in messages %}
+                        <div class="bg-krypton-green text-black px-6 py-3 rounded-lg shadow-lg animate-fade-in-down">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <script>
+                    // Auto-hide flash messages
+                    setTimeout(() => {
+                        const flashMessages = document.getElementById('flash-messages');
+                        if (flashMessages) {
+                            flashMessages.style.opacity = '0';
+                            flashMessages.style.transform = 'translateY(-100%)';
+                            setTimeout(() => flashMessages.remove(), 300);
+                        }
+                    }, 5000);
+                </script>
+            {% endif %}
+        {% endwith %}
+    {% endif %}
     
     {% block scripts %}{% endblock %}
 </body>
